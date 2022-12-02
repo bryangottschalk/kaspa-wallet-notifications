@@ -6,7 +6,7 @@ import { Channel } from 'diagnostics_channel';
 const PORT = process.env.PORT || 8080;
 const app = express();
 
-const TEN_SECONDS = 10000;
+const ONE_MINUTE = 60000;
 const KASPA_WALLET_ADDRESS = process.env.KASPA_WALLET_ADDRESS;
 const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
 const DISCORD_CHANNEL_ID: any = process.env.DISCORD_CHANNEL_ID;
@@ -36,13 +36,20 @@ setInterval(async () => {
     } = await axios.get(
       `https://api.kaspa.org/addresses/${KASPA_WALLET_ADDRESS}/balance`
     );
+    const { data: blockReward } = await axios.get(
+      `https://api.kaspa.org/info/blockreward?stringOnly=true`
+    );
     const currentBalanceInKAS = balance / 100000000;
     const CURRENT_BALANCE_MSG = `Current KAS balance: ${currentBalanceInKAS}`;
     console.log(CURRENT_BALANCE_MSG);
 
     if (cachedBalanceInKAS && cachedBalanceInKAS < currentBalanceInKAS) {
-      const differenceInKAS = currentBalanceInKAS - cachedBalanceInKAS;
-      const TRANSACTION_OCCURED_MSG = `Transaction occurred! Wallet balance modified by a difference in ${differenceInKAS} KAS.`;
+      const differenceInKAS: number = currentBalanceInKAS - cachedBalanceInKAS;
+      const TRANSACTION_OCCURED_MSG = `${
+        differenceInKAS === Number(blockReward)
+          ? 'Block mined!'
+          : 'Transaction occurred!'
+      }  Wallet balance modified by a difference in ${differenceInKAS} KAS.`;
       console.log(TRANSACTION_OCCURED_MSG);
 
       channel.send(TRANSACTION_OCCURED_MSG);
@@ -52,13 +59,12 @@ setInterval(async () => {
   } catch (err) {
     const ERROR_MSG = `Error occured when querying wallet address: ${err}`;
     console.log(ERROR_MSG);
-    channel.send(ERROR_MSG);
   }
-}, TEN_SECONDS);
+}, ONE_MINUTE);
 
 app.get('/', (req: Request, res: Response) => {
   res.send(
-    `Listening for wallet address updates every ${TEN_SECONDS} seconds...`
+    `Listening for wallet address updates every ${ONE_MINUTE} minute...`
   );
 });
 
