@@ -17,7 +17,7 @@ Create an application here to get your key - I called mine `kaspa-wallet-notific
 
 To start the application, install dependencies via `yarn install`, then `yarn dev` to run the server. If all of the `.env` file parameters are populated correctly, you should see some logs related to your KAS balance in your console. If a transaction occurs that changes your balance, your discord channel should receive a message saying so.
 
-![image](https://user-images.githubusercontent.com/25968605/205380865-0efa23b7-9d44-4cb2-9a95-f4f8876b8d5a.png)
+![image](https://user-images.githubusercontent.com/25968605/205409623-421c088b-7617-48cd-a34b-12d30c445767.png)
 
 ![image](https://user-images.githubusercontent.com/25968605/205376748-f4b58de5-a459-411b-84c2-a618f231bce9.png)
 
