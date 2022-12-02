@@ -1,15 +1,12 @@
 import express, { Request, Response } from 'express';
-import axios from 'axios';
-import { Client, GatewayIntentBits, Partials } from 'discord.js';
-import { Channel } from 'diagnostics_channel';
+import { Client, GatewayIntentBits, Partials, TextChannel } from 'discord.js';
+import { pollWalletAddress } from './poll-wallet-address';
 
 const PORT = process.env.PORT || 8080;
 const app = express();
 
-const ONE_MINUTE = 60000;
-const KASPA_WALLET_ADDRESS = process.env.KASPA_WALLET_ADDRESS;
 const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
-const DISCORD_CHANNEL_ID: any = process.env.DISCORD_CHANNEL_ID;
+const DISCORD_CHANNEL_ID = process.env.DISCORD_CHANNEL_ID;
 
 // Create the bot
 const client = new Client({
@@ -17,55 +14,19 @@ const client = new Client({
   partials: [Partials.Channel]
 });
 
-let channel: Channel | any = null;
+let channel: TextChannel;
 
 client.login(DISCORD_BOT_TOKEN);
 
 client.on('ready', (client) => {
-  channel = client.channels.cache.get(DISCORD_CHANNEL_ID);
+  channel = client.channels.cache.get(
+    DISCORD_CHANNEL_ID as string
+  ) as TextChannel;
+  pollWalletAddress(channel);
 });
 
-let cachedBalanceInKAS = 0;
-
-setInterval(async () => {
-  console.log('querying wallet...');
-
-  try {
-    const {
-      data: { balance }
-    } = await axios.get(
-      `https://api.kaspa.org/addresses/${KASPA_WALLET_ADDRESS}/balance`
-    );
-    const { data: blockReward } = await axios.get(
-      `https://api.kaspa.org/info/blockreward?stringOnly=true`
-    );
-    const currentBalanceInKAS = balance / 100000000;
-    const CURRENT_BALANCE_MSG = `Current KAS balance: ${currentBalanceInKAS}`;
-    console.log(CURRENT_BALANCE_MSG);
-
-    if (cachedBalanceInKAS && cachedBalanceInKAS < currentBalanceInKAS) {
-      const differenceInKAS: number = currentBalanceInKAS - cachedBalanceInKAS;
-      const TRANSACTION_OCCURED_MSG = `${
-        differenceInKAS === Number(blockReward)
-          ? 'Block mined!'
-          : 'Transaction occurred!'
-      }  Wallet balance modified by a difference in ${differenceInKAS} KAS.`;
-      console.log(TRANSACTION_OCCURED_MSG);
-
-      channel.send(TRANSACTION_OCCURED_MSG);
-      channel.send(CURRENT_BALANCE_MSG);
-    }
-    cachedBalanceInKAS = currentBalanceInKAS;
-  } catch (err) {
-    const ERROR_MSG = `Error occured when querying wallet address: ${err}`;
-    console.log(ERROR_MSG);
-  }
-}, ONE_MINUTE);
-
 app.get('/', (req: Request, res: Response) => {
-  res.send(
-    `Listening for wallet address updates every ${ONE_MINUTE} minute...`
-  );
+  res.send(`Listening for wallet address updates...`);
 });
 
 app.listen(PORT, () => {
