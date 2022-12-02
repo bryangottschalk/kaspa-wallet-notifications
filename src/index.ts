@@ -18,17 +18,17 @@ let channel: TextChannel;
 
 client.login(DISCORD_BOT_TOKEN);
 
-client.on('ready', (client) => {
+client.on('ready', (client): void => {
   channel = client.channels.cache.get(
     DISCORD_CHANNEL_ID as string
   ) as TextChannel;
   pollWalletAddress(channel);
 });
 
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (req: Request, res: Response): void => {
   res.send(`Listening for wallet address updates...`);
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, (): void => {
   console.log(`app running on port ${PORT}`);
 });

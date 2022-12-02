@@ -15,9 +15,12 @@ const queryForTransaction = async (channel: TextChannel) => {
     }: AxiosResponse<{ balance: number }> = await axios.get(
       `https://api.kaspa.org/addresses/${KASPA_WALLET_ADDRESS}/balance`
     );
+
     const { data: blockReward }: AxiosResponse<string> = await axios.get(
       `https://api.kaspa.org/info/blockreward?stringOnly=true`
     );
+    const roundedBlockReward: number = Math.round(Number(blockReward));
+
     const currentBalanceInKAS = balance / 100000000;
     const CURRENT_BALANCE_MSG = `Current KAS balance: ${currentBalanceInKAS}`;
     console.log(CURRENT_BALANCE_MSG);
@@ -26,9 +29,10 @@ const queryForTransaction = async (channel: TextChannel) => {
       cachedBalanceInKAS !== 0 &&
       cachedBalanceInKAS !== currentBalanceInKAS
     ) {
-      const differenceInKAS: number = currentBalanceInKAS - cachedBalanceInKAS;
+      const differenceInKAS = currentBalanceInKAS - cachedBalanceInKAS;
+      const roundedDifferenceInKAS = Math.round(differenceInKAS);
       const TRANSACTION_OCCURED_MSG = `${
-        differenceInKAS === Number(blockReward)
+        roundedDifferenceInKAS === roundedBlockReward
           ? 'Block mined!'
           : 'Transaction occurred!'
       }  Wallet balance modified by a difference in ${differenceInKAS} KAS.`;
