@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { sendDiscordChannelMessage } from './helpers';
 import { TextChannel } from 'discord.js';
 
-const TWO_MINUTES = 120000;
+const FIVE_MINUTES = 300000;
 const KASPA_WALLET_ADDRESS = process.env.KASPA_WALLET_ADDRESS;
 
 const queryForTransaction = async (channel: TextChannel) => {
@@ -22,7 +22,10 @@ const queryForTransaction = async (channel: TextChannel) => {
     const CURRENT_BALANCE_MSG = `Current KAS balance: ${currentBalanceInKAS}`;
     console.log(CURRENT_BALANCE_MSG);
 
-    if (cachedBalanceInKAS && cachedBalanceInKAS < currentBalanceInKAS) {
+    if (
+      cachedBalanceInKAS !== 0 &&
+      cachedBalanceInKAS !== currentBalanceInKAS
+    ) {
       const differenceInKAS: number = currentBalanceInKAS - cachedBalanceInKAS;
       const TRANSACTION_OCCURED_MSG = `${
         differenceInKAS === Number(blockReward)
@@ -45,10 +48,10 @@ export const pollWalletAddress = (channel: TextChannel): void => {
   queryForTransaction(channel);
   console.log(
     `checking wallet for transactions every ${Math.floor(
-      TWO_MINUTES / 1000 / 60
+      FIVE_MINUTES / 1000 / 60
     )} minutes...`
   );
   setInterval(async () => {
     queryForTransaction(channel);
-  }, TWO_MINUTES);
+  }, FIVE_MINUTES);
 };
