@@ -35,13 +35,17 @@ export const pollWalletAddress = async (channel: TextChannel) => {
         cachedBalanceInKAS !== 0 &&
         cachedBalanceInKAS !== currentBalanceInKAS
       ) {
-        const differenceInKAS = currentBalanceInKAS - cachedBalanceInKAS;
+        const differenceInKAS = Number(
+          (currentBalanceInKAS - cachedBalanceInKAS).toFixed(2)
+        );
         const roundedDifferenceInKAS = Math.round(differenceInKAS);
         const TRANSACTION_OCCURED_MSG = `${
           roundedDifferenceInKAS === roundedBlockReward
             ? 'Block mined!'
             : 'Transaction occurred!'
-        }  Wallet balance modified by a difference in ${differenceInKAS} KAS.`;
+        }  Wallet balance modified by ${
+          Math.sign(differenceInKAS) ? '+' : '-'
+        }${differenceInKAS} KAS.`;
         console.log(TRANSACTION_OCCURED_MSG);
 
         sendDiscordChannelMessage(channel, TRANSACTION_OCCURED_MSG);
