@@ -19,9 +19,4 @@ To start the application, install dependencies via `yarn install`, then `yarn de
 
 ![image](https://user-images.githubusercontent.com/25968605/205409623-421c088b-7617-48cd-a34b-12d30c445767.png)
 
-![image](https://user-images.githubusercontent.com/25968605/205421370-dab81525-480c-4c86-9026-6242bdb4668c.png)
-
-![image](https://user-images.githubusercontent.com/25968605/205376748-f4b58de5-a459-411b-84c2-a618f231bce9.png)
-
-![image](https://user-images.githubusercontent.com/25968605/205376629-7907980a-2590-44de-916a-b59add08a2f4.png)
-
+![image](https://user-images.githubusercontent.com/25968605/205423190-cce93614-71f1-4c25-8383-bcd71b4e625c.png)

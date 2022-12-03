@@ -28,9 +28,9 @@ export const pollWalletAddress = async (channel: TextChannel) => {
       const roundedBlockReward: number = Math.round(Number(blockReward));
 
       const currentBalanceInKAS = balance / 100000000;
-      const CURRENT_BALANCE_MSG = `Current KAS balance: ${currentBalanceInKAS.toLocaleString(
-        'en-US'
-      )}`;
+      const CURRENT_BALANCE_MSG = `Current KAS balance: ${Number(
+        currentBalanceInKAS.toFixed(2)
+      ).toLocaleString('en-US')}`;
       console.log(CURRENT_BALANCE_MSG);
 
       if (
