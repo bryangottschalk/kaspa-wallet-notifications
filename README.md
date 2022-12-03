@@ -4,8 +4,8 @@ TypeScript NodeJS application to query the Kaspa blockchain's public REST server
 
 ### Software requirements
 
-Make sure NodeJS and the Yarn package manager are installed on your machine.
-https://nodejs.org/en/
+Make sure NodeJS and the Yarn package manager are installed on your machine. <br/> <br/>
+https://nodejs.org/en/ <br/>
 https://classic.yarnpkg.com/lang/en/docs/install
 
 ### Discord requirements
@@ -19,15 +19,19 @@ https://classic.yarnpkg.com/lang/en/docs/install
 Create a `.env` file and copy/paste the contents of `.env.sample` into it to get started.
 The intention is for you to populate `KASPA_WALLET_ADDRESS`, `DISCORD_BOT_TOKEN`, and `DISCORD_CHANNEL_ID` with your own values.
 
-`DISCORD_BOT_TOKEN` is the token from your application at https://discord.com/developers/applications -> your app in the Bot tab.
+`DISCORD_BOT_TOKEN` is the token from your application at https://discord.com/developers/applications -> your app -> in the Bot tab.
+
+![image](https://user-images.githubusercontent.com/25968605/205444423-ea59a93d-1370-473d-b257-7449f9a3875c.png)
+
 `DISCORD_CHANNEL_ID` requires right clicking the text channel you intend to use your bot and copying the ID.
 
 ### Starting the Application
 
-`yarn install` to install dependencies
+`yarn install` to install dependencies <br/>
 `yarn dev` to run the server
 
-If all of the `.env` file parameters are populated correctly, you should see logs related to your KAS balance in your console. If a transaction occurs that changes your balance, your Discord channel should receive a message saying so. If that amount matches the current block reward, the app will assume you've solo mined a block and will give that detail.
+If all of the `.env` file parameters are populated correctly, you should see logs related to your KAS balance in your console. <br/>
+If a transaction occurs that changes your balance, your Discord channel should receive a message saying so. If that amount matches the current block reward, the app will assume you've solo mined a block and will give that detail.
 
 ![image](https://user-images.githubusercontent.com/25968605/205409623-421c088b-7617-48cd-a34b-12d30c445767.png)
 
