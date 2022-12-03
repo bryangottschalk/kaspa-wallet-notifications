@@ -16,13 +16,23 @@ const client = new Client({
 
 let channel: TextChannel;
 
-client.login(DISCORD_BOT_TOKEN);
+try {
+  client.login(DISCORD_BOT_TOKEN);
+} catch (err) {
+  console.log(`Error logging in with Discord token: ${err}`);
+}
 
 client.on('ready', (client): void => {
   channel = client.channels.cache.get(
     DISCORD_CHANNEL_ID as string
   ) as TextChannel;
-  pollWalletAddress(channel);
+  if (channel) {
+    pollWalletAddress(channel);
+  } else {
+    console.log(
+      `Error getting Discord channel. Is your DISCORD_CHANNEL_ID correct?`
+    );
+  }
 });
 
 app.get('/', (req: Request, res: Response): void => {
