@@ -28,7 +28,9 @@ export const pollWalletAddress = async (channel: TextChannel) => {
       const roundedBlockReward: number = Math.round(Number(blockReward));
 
       const currentBalanceInKAS = balance / 100000000;
-      const CURRENT_BALANCE_MSG = `Current KAS balance: ${currentBalanceInKAS}`;
+      const CURRENT_BALANCE_MSG = `Current KAS balance: ${currentBalanceInKAS.toLocaleString(
+        'en-US'
+      )}`;
       console.log(CURRENT_BALANCE_MSG);
 
       if (
@@ -45,7 +47,7 @@ export const pollWalletAddress = async (channel: TextChannel) => {
             : 'Transaction occurred!'
         }  Wallet balance modified by ${
           Math.sign(differenceInKAS) ? '+' : '-'
-        }${differenceInKAS} KAS.`;
+        }${differenceInKAS.toLocaleString('en-US')} KAS.`;
         console.log(TRANSACTION_OCCURED_MSG);
 
         sendDiscordChannelMessage(channel, TRANSACTION_OCCURED_MSG);
